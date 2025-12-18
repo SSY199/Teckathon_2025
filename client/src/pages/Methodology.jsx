@@ -37,18 +37,18 @@ export const Methodology = () => {
             <TableRow>
               <TableCell className="font-medium">Structure</TableCell>
               <TableCell>URL uses a numeric IP address instead of a domain name</TableCell>
-              <TableCell className="text-right text-red-600 font-bold">-25 Points</TableCell>
+              <TableCell className="text-right text-red-600 font-bold">-15 Points</TableCell>
             </TableRow>
             <TableRow>
               <TableCell className="font-medium">Identity</TableCell>
               <TableCell>Domain Age is less than 180 days (New Domain)</TableCell>
               <TableCell className="text-right text-red-600 font-bold">-20 Points</TableCell>
             </TableRow>
-            <TableRow>
+            {/* <TableRow>
               <TableCell className="font-medium">Complexity</TableCell>
               <TableCell>Overly long URL or excessive special characters (@, -, _)</TableCell>
               <TableCell className="text-right text-red-600 font-bold">-10 Points</TableCell>
-            </TableRow>
+            </TableRow> */}
           </TableBody>
         </Table>
       </CardContent>

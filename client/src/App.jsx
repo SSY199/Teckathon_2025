@@ -1,14 +1,15 @@
 import { useState, useEffect } from 'react';
-import { ShieldCheck, AlertCircle, Loader2, Info, Gavel } from 'lucide-react';
+import { ShieldCheck, AlertCircle, Loader2, Gavel } from 'lucide-react';
 import SearchBar from './pages/SearchBar';
 import ScoreGauge from './pages/Scoreguage';
 import { SecurityInsight } from './pages/SecurityInsight';
 import { TechnicalDNA } from './pages/TechnicalDNA';
 import { URLStructure } from './pages/URLStructure';
-import { Methodology } from './pages/Methodology'; // Import the new Methodology component
+import { Methodology } from './pages/Methodology';
+import { ScoreImpacts } from './pages/ScoreImpacts'; // NEW COMPONENT
 import { analyzeUrl } from './api/api.client.js';
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 
 function App() {
   const [result, setResult] = useState(null);
@@ -81,10 +82,9 @@ function App() {
       {result && !loading && (
         <div className="w-full max-w-6xl space-y-8 animate-in slide-in-from-bottom-8 duration-700">
           
-          {/* 1. PRIMARY RESULT: GAUGE */}
           <ScoreGauge score={result.score} status={result.status} />
 
-          {/* 2. FINAL VERDICT SUMMARY */}
+          {/* FINAL VERDICT SUMMARY */}
           <Card className={`border-l-8 shadow-sm ${
             result.status === 'Safe' ? 'border-l-green-500 bg-green-50/50' : 
             result.status === 'Suspicious' ? 'border-l-yellow-500 bg-yellow-50/50' : 'border-l-red-500 bg-red-50'
@@ -107,7 +107,10 @@ function App() {
             </CardContent>
           </Card>
           
-          {/* 3. MODULAR DATA GRID */}
+          {/* NEW: IMPACT BREAKDOWN (What increased/decreased the score) */}
+          <ScoreImpacts impacts={result.impacts} />
+
+          {/* MODULAR DATA GRID */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <SecurityInsight 
               reputation={result.report?.reputation} 
@@ -120,28 +123,9 @@ function App() {
               structure={result.report?.urlStructure} 
             />
           </div>
-
-          {/* 4. ANALYSIS SUMMARY (POINTS BREAKDOWN) */}
-          {result.explanations?.length > 0 && (
-            <Card className="bg-white border shadow-sm">
-               <CardHeader className="bg-slate-50 border-b py-3">
-                  <CardTitle className="text-sm font-bold text-slate-700 uppercase tracking-wider">Analysis Highlights</CardTitle>
-               </CardHeader>
-               <CardContent className="p-4">
-                  <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2 list-none">
-                    {result.explanations.map((exp, i) => (
-                      <li key={i} className="text-sm text-slate-600 flex items-start gap-2">
-                        <span className="text-blue-500 mt-1">•</span> {exp}
-                      </li>
-                    ))}
-                  </ul>
-               </CardContent>
-            </Card>
-          )}
         </div>
       )}
 
-      {/* 5. METHODOLOGY (Always visible at the bottom) */}
       <Methodology />
 
       <footer className="mt-16 pb-8 text-slate-400 text-xs text-center">
